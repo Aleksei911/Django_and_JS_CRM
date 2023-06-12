@@ -3,6 +3,7 @@ const feedBackArea = document.querySelector('.invalid_feedback');
 const emailField = document.querySelector('#emailField');
 const emailFeedBackArea = document.querySelector('.emailFeedBackArea');
 const usernameSuccessOutput = document.querySelector('.usernameSuccessOutput');
+const submitBtn = document.querySelector('.submit-btn');
 
 
 emailField.addEventListener('keyup', (e) => {
@@ -18,9 +19,12 @@ emailField.addEventListener('keyup', (e) => {
         }).then(res => res.json()).then(data => {
             console.log('data', data);
             if (data.email_error) {
+                submitBtn.disabled = true;
                 emailField.classList.add('is-invalid');
                 emailFeedBackArea.style.display = 'block';
                 emailFeedBackArea.innerHTML = '<p>${data.email_error}</p>';
+            } else {
+                submitBtn.removeAttribute('disabled');
             }
         });
     }
@@ -41,11 +45,14 @@ usernameField.addEventListener('keyup', (e) => {
             body: JSON.stringify({username: usernameVal}),
             method: 'POST',
         }).then(res => res.json()).then(data => {
-            console.log('data', data);
+            usernameSuccessOutput.style.display = 'none';
             if (data.username_error) {
                 usernameField.classList.add('is-invalid');
                 feedBackArea.style.display = 'block';
                 feedBackArea.innerHTML = '<p>${data.username_error}</p>';
+                submitBtn.disabled = true;
+            } else {
+                submitBtn.removeAttribute('disabled');
             }
         });
     }
