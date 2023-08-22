@@ -79,3 +79,10 @@ def expense_edit(request, pk):
         return redirect('expenses')
     else:
         return render(request, 'expenses/edit-expense.html', context)
+
+
+def delete_expense(request, pk):
+    expense = Expense.objects.get(pk=pk)
+    expense.delete()
+    messages.success(request, 'Expense removed')
+    return redirect('expenses')
