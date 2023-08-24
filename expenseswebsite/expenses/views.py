@@ -5,6 +5,7 @@ from .models import Category, Expense
 from django.contrib import messages
 from django.core.paginator import Paginator
 from django.http import JsonResponse
+from userpreferences.models import UserPreferences
 
 
 def search_expenses(request):
@@ -27,11 +28,13 @@ def index(request):
     paginator = Paginator(expenses, 2)
     page_number = request.GET.get('page')
     page_obj = Paginator.get_page(paginator, page_number)
+    currency = UserPreferences.objects.get(user=request.user).currency
 
     context = {
         'categories': categories,
         'expenses': expenses,
         'page_obj': page_obj,
+        'currency': currency,
     }
     return render(request, 'expenses/index.html', context)
 
