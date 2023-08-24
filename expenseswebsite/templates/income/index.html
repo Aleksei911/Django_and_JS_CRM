@@ -7,19 +7,19 @@
         <div class="col-md-10">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{% url 'expenses' %}">Expenses</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">My Expenses</li>
+                    <li class="breadcrumb-item"><a href="{% url 'expenses' %}">Income</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">My Income</li>
                 </ol>
             </nav>
         </div>
 
         <div class="col-md-2">
-            <a type="button" href="{% url 'add-expenses'%}" class="btn btn-primary">New Expense</a>
+            <a href="{% url 'add-income'%}" class="btn btn-primary">New Income</a>
         </div>
     </div>
     <div class="container">
         {% include 'partials/_messages.html' %}
-        {% if expenses.count %}
+        {% if income.count %}
         <div class="row">
             <div class="col-md-8"></div>
             <div class="col-md-4">
@@ -34,20 +34,20 @@
                 <thead>
                 <tr>
                     <th>Amount ({{ currency }})</th>
+                    <th>Source</th>
                     <th>Description</th>
-                    <th>Category</th>
                     <th>Date</th>
                     <th></th>
                 </tr>
                 </thead>
                 <tbody>
-                {% for expens in page_obj %}
+                {% for income in page_obj %}
                 <tr>
-                    <td>{{expens.amount}}</td>
-                    <td>{{expens.category}}</td>
-                    <td>{{expens.description}}</td>
-                    <td>{{expens.date}}</td>
-                    <td><a href="{% url 'expense-edit' expense.id %}" class="btn btn-secondary btn-sm">Edit</a></td>
+                    <td>{{income.amount}}</td>
+                    <td>{{income.source}}</td>
+                    <td>{{income.description}}</td>
+                    <td>{{income.date}}</td>
+                    <td><a href="{% url 'income-edit' income.id %}" class="btn btn-secondary btn-sm">Edit</a></td>
                 </tr>
                 {% endfor %}
                 </tbody>
@@ -59,7 +59,7 @@
                 <thead>
                 <tr>
                     <th>Amount ({{ currency }})</th>
-                    <th>Category</th>
+                    <th>Source</th>
                     <th>Description</th>
                     <th>Date</th>
                     <th></th>
@@ -96,7 +96,7 @@
     </div>
 </div>
 
-<script src="{% static 'js/searchExpenses.js' %}">
+<script src="{% static 'js/searchIncome.js' %}">
 
 </script>
 
