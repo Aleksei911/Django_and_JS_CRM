@@ -1,0 +1,19 @@
+{% extends 'admin/base.html' %}
+{% load static %}
+
+{% block branding %}
+<h1 id="head">
+    <a href="https://www.flaticon.com/ru/free-icons/" title="иконки" data-width="35" data-height="35"> иконки от Roundicons - Flaticon</a>
+    MyExpenses
+</h1>
+{% endblock %}
+
+{% block extrastyle %}
+<link rel="stylesheet" href="{% static 'css/adminstyle.css' %}">
+{% endblock %}
+
+.module h2,
+.module caption,
+.inline-group h2 {
+  background: rgb(0, 62, 69);
+}
