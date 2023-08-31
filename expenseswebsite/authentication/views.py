@@ -1,4 +1,5 @@
 import json
+import threading
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views import View
@@ -14,7 +15,15 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 
 
-# Create your views here.
+class EmailThread(threading.Thread):
+    def __init__(self, email):
+        self.email = email
+        threading.Thread.__init__(self)
+
+    def run(self):
+        self.email.send(fail_silently=False)
+
+
 class EmailValidationView(View):
     def post(self, request):
         data = json.loads(request.body)
@@ -81,7 +90,7 @@ class RegistrationView(View):
                     'noreply@semycolon.com'
                     [email]
                 )
-                email.send(fail_silently=False)
+                EmailThread(email).start()
                 messages.success(request, 'Account successfully created')
                 return render(request, 'authentication/register.html')
 
@@ -181,7 +190,7 @@ class RequestPasswordResetEmail(View):
                 'noreply@semycolon.com'
                 [email]
             )
-            email.send(fail_silently=False)
+            EmailThread(email).start()
 
         messages.success(request, 'We have send you an email to reset your password')
         return render(request, 'authentication/reset-password.html')
@@ -216,11 +225,11 @@ class CompletePasswordReset(View):
         password2 = request.POST['password2']
 
         if password != password2:
-            messages.error(request,'Passwords don`t match')
+            messages.error(request, 'Passwords don`t match')
             return render(request, 'authentication/set-new-password.html', context)
 
         if len(password) < 6:
-            messages.error(request,'Passwords too short')
+            messages.error(request, 'Passwords too short')
             return render(request, 'authentication/set-new-password.html', context)
 
         user_id = force_str(urlsafe_base64_decode(uidb64))
